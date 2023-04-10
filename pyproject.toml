@@ -1,0 +1,14 @@
+[tool.pdm]
+
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "Felipe Rotermel", email = "feliperotermell@gmail.com"},
+]
+dependencies = [
+    "django-cors-headers>=3.14.0",
+]
+requires-python = ">=3.10"
+license = {text = "n"}
