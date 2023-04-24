@@ -1,35 +1,32 @@
 <script>
 import LivrosApi from "@/api/livros";
-import AutoresApi from "@/api/autores";
 const livrosApi = new LivrosApi();
+import AutoresApi from "@/api/autores";
 const autoresApi = new AutoresApi();
 export default {
   data() {
-    return {
-      livros: [],
-      livro: {},
-      autores: [],
-      autor: {},
-    };
-  },
+  return {
+    livros: [],
+    livro: {
+      autor_id: null,
+    },
+    autores: [],
+  };
+},
   async created() {
-    this.livros = await livrosApi.buscarTodosOsLivros();
-    this.autores = await autoresApi.buscarTodosOsAutores();
+  this.livros = await livrosApi.buscarTodosOsLivros();
+  this.autores = await autoresApi.buscarTodosOsAutores();
   },
   methods: {
     async salvar() {
-      if (this.livro.id) {
-        await livrosApi.atualizarLivro(this.livro);
-        await autoresApi.atualizarAutor(this.autor);
-      } else {
-        await livrosApi.adicionarLivro(this.livro);
-        await autoresApi.adicionarAutor(this.autor);
-      }
-      this.livro = {};
-        this.autor = {};
-      this.livros = await livrosApi.buscarTodosOsLivros();
-        this.autores = await autoresApi.buscarTodosOsAutores();
-    },
+  if (this.livro.id) {
+    await livrosApi.atualizarLivro(this.livro);
+  } else {
+    await livrosApi.adicionarLivro({ ...this.livro, autor: `/autores/${this.livro.autor_id}/` });
+  }
+  this.livro = { autor_id: null };
+  this.livros = await livrosApi.buscarTodosOsLivros();
+},
     editar(livro) {
       Object.assign(this.livro, livro);
     },
@@ -45,20 +42,23 @@ export default {
   <h1>Livros</h1>
   <hr />
   <div class="form">
-    <input type="text" v-model="livro.titulo" placeholder="Título" />
-    <input type="text" v-model="livro.isbn" placeholder="ISBN" />
-    <input type="text" v-model="livro.quantidade" placeholder="Quantidade" />
-    <input type="text" v-model="livro.preco" placeholder="Preço" />
-    <input type="text" v-model="livro.categoria" placeholder="Categoria" />
-    <input type="text" v-model="livro.editora" placeholder="Editora" />
-    <input type="text" v-model="livro.autor" placeholder="Autor" />
-    <button @click="salvar">Salvar</button>
-  </div>
+  <input type="text" v-model="livro.titulo" placeholder="Título" />
+  <input type="text" v-model="livro.isbn" placeholder="ISBN" />
+  <input type="text" v-model="livro.quantidade" placeholder="Quantidade" />
+  <input type="text" v-model="livro.preco" placeholder="Preço" />
+
+  <label for="autor-select">Autor:</label>
+  <select id="autor-select" v-model="livro.autor_id">
+    <option v-for="autor in autores" :value="autor.id">{{ autor.nome }}</option>
+  </select>
+
+  <button @click="salvar">Salvar</button>
+</div>
   <hr />
   <ul>
     <li v-for="livro in livros" :key="livro.id">
       <span @click="editar(livro)">
-        ({{ livro.id }}) - {{ livro.titul }} -
+        ({{ livro.id }}) - {{ livro.titulo }} - {{ livro.isbn }} - {{ livro.quantidade }} - {{ livro.preco }}
       </span>
       <button @click="excluir(livro)">X</button>
     </li>
