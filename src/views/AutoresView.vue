@@ -33,12 +33,12 @@ export default {
 </script>
 
 <template>
-  <h1>Autores</h1>
+  <h1 class="titulo">Autores</h1>
   <hr />
-  <div class="form">
-    <input type="text" v-model="autor.nome" placeholder="Nome do autor" />
-    <input type="text" v-model="autor.email" placeholder="Email do autor" />
-    <button @click="salvar">Salvar</button>
+  <div class="form input-group">
+    <input class="form-control" type="text" v-model="autor.nome" placeholder="Nome do autor" />
+    <input class="form-control" type="text" v-model="autor.email" placeholder="Email do autor" />
+    <button class="btn btn-outline-secondary" @click="salvar">Salvar</button>
   </div>
   <hr />
   <ul>
@@ -46,9 +46,7 @@ export default {
       <span @click="editar(autor)">
         ({{ autor.id }}) - {{ autor.nome }} - {{ autor.email }}
       </span>
-      <button @click="excluir(autor)">X</button>
+      <button  @click="excluir(autor)">X</button>
     </li>
   </ul>
 </template>
-
-<style></style>

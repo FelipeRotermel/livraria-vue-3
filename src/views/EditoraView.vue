@@ -33,12 +33,12 @@ export default {
 </script>
 
 <template>
-  <h1>Editoras</h1>
+  <h1 class="titulo">Editoras</h1>
   <hr />
-  <div class="form">
-    <input type="text" v-model="editora.nome" placeholder="Nome da editora" />
-    <input type="text" v-model="editora.site" placeholder="Site da editora" />
-    <button @click="salvar">Salvar</button>
+  <div class="form input-group">
+    <input class="form-control" type="text" v-model="editora.nome" placeholder="Nome da editora" />
+    <input class="form-control" type="text" v-model="editora.site" placeholder="Site da editora" />
+    <button class="btn btn-outline-secondary" @click="salvar">Salvar</button>
   </div>
   <hr />
   <ul>
@@ -46,7 +46,7 @@ export default {
       <span @click="editar(editora)">
         ({{ editora.id }}) - {{ editora.nome }} - {{ editora.site }}
       </span>
-      <button @click="excluir(editora)">X</button>
+      <button  @click="excluir(editora)">X</button>
     </li>
   </ul>
 </template>

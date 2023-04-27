@@ -55,13 +55,13 @@ export default {
 </script>
 
 <template>
-  <h1>Livros</h1>
+  <h1 class="titulo">Livros</h1>
   <hr />
-  <div class="form">
-  <input type="text" v-model="livro.titulo" placeholder="Título" />
-  <input type="text" v-model="livro.isbn" placeholder="ISBN" />
-  <input type="text" v-model="livro.quantidade" placeholder="Quantidade" />
-  <input type="text" v-model="livro.preco" placeholder="Preço" />
+  <div class="form input-group">
+  <input class="form-control" type="text" v-model="livro.titulo" placeholder="Título" />
+  <input class="form-control" type="text" v-model="livro.isbn" placeholder="ISBN" />
+  <input class="form-control" type="text" v-model="livro.quantidade" placeholder="Quantidade" />
+  <input class="form-control" type="text" v-model="livro.preco" placeholder="Preço" />
 
   <label for="autor-select">Autor:</label>
   <select id="autor-select" v-model="livro.autor_id">
@@ -78,7 +78,7 @@ export default {
     <option v-for="categoria in categorias" :value="categoria.id">{{ categoria.descricao }}</option>
   </select>
 
-  <button @click="salvar">Salvar</button>
+  <button class="btn btn-outline-secondary" @click="salvar">Salvar</button>
 </div>
   <hr />
   <ul>
@@ -91,4 +91,3 @@ export default {
   </ul>
 </template>
 
-<style></style>
