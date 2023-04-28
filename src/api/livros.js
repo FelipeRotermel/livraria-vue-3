@@ -1,23 +1,19 @@
-import axios from 'axios';
+import axios from "axios";
 export default class LivrosApi {
   async buscarTodosOsLivros() {
-    const { data } = await axios.get('/livros/');
+    const { data } = await axios.get("/livros/");
     return data;
   }
-  async adicionarLivro(livros) {
-    const { data } = await axios.post('/livros/', livros);
+  async adicionarLivro(livro) {
+    const { data } = await axios.post("/livros/", livro);
     return data;
   }
-  async atualizarLivros(livros) {
-    const { data } = await axios.put(`/livros/${livros.id}/`, livros);
+  async atualizarLivro(livro) {
+    const { data } = await axios.put(`/livros/${livro.id}/`, livro);
     return data;
   }
   async excluirLivro(id) {
     const { data } = await axios.delete(`/livros/${id}/`);
-    return data;
-  }
-  async buscarTodosOsAutores() {
-    const { data } = await axios.get('/autores/');
     return data;
   }
 }

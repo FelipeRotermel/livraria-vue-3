@@ -10,15 +10,11 @@ const categoriasApi = new CatagoriasApi();
 export default {
   data() {
   return {
-    livros: [],
-    livro: {
-      autor_id: null,
-      editora_id: null,
-      categoria_id: null,
-    },
-    autores: [],
-    editoras: [],
-    categorias: [],
+    livros : [],
+    livro: {},
+    autor: {},
+    editora: {},
+    categoria: {},
   };
 },
   async created() {
@@ -32,15 +28,9 @@ export default {
   if (this.livro.id) {
     await livrosApi.atualizarLivro(this.livro);
   } else {
-    const autor = this.autores.find(a => a.id === this.livro.autor_id);
-    const editora = this.editoras.find(e => e.id === this.livro.editora_id);
-    const categoria = this.categorias.find(i => i.id === this.livro.categoria_id);
-
-    await livrosApi.adicionarLivro({ ...this.livro, autor, editora, categoria });
+    await livrosApi.atualizarLivro(this.livro);
   }
-  this.livro = { autor_id: null };
-  this.livro = { editora_id: null };
-  this.livro = { categoria_id: null };
+  this.livro = {};
   this.livros = await livrosApi.buscarTodosOsLivros();
 },
     editar(livro) {
@@ -64,17 +54,17 @@ export default {
   <input class="form-control" type="text" v-model="livro.preco" placeholder="Preço" />
 
   <label for="autor-select">Autor:</label>
-  <select id="autor-select" v-model="livro.autor_id">
+  <select id="autor-select" v-model="livro.autor">
     <option v-for="autor in autores" :value="autor.id">{{ autor.nome }}</option>
   </select>
 
   <label for="editora-select">Editora:</label>
-  <select id="editora-select" v-model="livro.editora_id">
+  <select id="editora-select" v-model="livro.editora">
     <option v-for="editora in editoras" :value="editora.id">{{ editora.nome }}</option>
   </select>
 
   <label for="categoria-select">Categoria:</label>
-  <select id="categoria-select" v-model="livro.categoria_id">
+  <select id="categoria-select" v-model="livro.categoria">
     <option v-for="categoria in categorias" :value="categoria.id">{{ categoria.descricao }}</option>
   </select>
 
