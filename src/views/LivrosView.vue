@@ -1,22 +1,21 @@
 <script>
 import LivrosApi from "@/api/livros";
-import AutoresApi from "@/api/autores";
-import EditorasApi from "@/api/editoras";
-import CategoriasApi from "@/api/categorias";
 const livrosApi = new LivrosApi();
+import AutoresApi from "@/api/autores";
 const autoresApi = new AutoresApi();
+import EditorasApi from "@/api/editoras";
 const editorasApi = new EditorasApi();
+import CategoriasApi from "@/api/categorias";
 const categoriasApi = new CategoriasApi();
 export default {
   data() {
     return {
-      categorias: [],
-      editoras: [],
-      autores: [],
       livros: [],
       livro: {},
+      autor: {},
       editora: {},
       categoria: {},
+      itemSelecionado: null,
     };
   },
   async created() {
@@ -25,7 +24,22 @@ export default {
     this.editoras = await editorasApi.buscarTodasAsEditoras();
     this.categorias = await categoriasApi.buscarTodasAsCategorias();
   },
+  watch: {
+    itemSelecionado(novoValor) {
+      if (novoValor != null) {
+        document.getElementById("divBody").classList.add("blur");
+        document.getElementById("divNav").classList.add("blur");
+      } else {
+        document.getElementById("divBody").classList.remove("blur");
+        document.getElementById("divNav").classList.remove("blur");
+      }
+    },
+  },
   methods: {
+    async selecionarItem(livro) {
+      this.itemSelecionado = livro;
+    },
+
     async salvar() {
       if (this.livro.id) {
         await livrosApi.atualizarLivro(this.livro);
@@ -47,60 +61,83 @@ export default {
 </script>
 
 <template>
-  <div class="container-fluid">
-    <h1 class="titulo">Livros</h1>
-    <div class="infoContent">
-      <hr />
-      <div class="form input-group">
-        <input class="form-control" type="text" v-model="livro.titulo" placeholder="Título" />
-        <input class="form-control" type="text" v-model="livro.isbn" placeholder="ISBN" />
-        <input class="form-control" type="text" v-model="livro.quantidade" placeholder="Quantidade" />
-        <input class="form-control" type="text" v-model="livro.preco" placeholder="Preço" />
-
-        <label>Autor:</label>
-        <select class="form-select" v-model="livro.autor">
-          <option v-for="autor in autores" :value="autor.id">{{ autor.nome }}</option>
-        </select>
-
-        <label>Editora:</label>
-        <select class="form-select" v-model="livro.editora">
-          <option v-for="editora in editoras" :value="editora.id">{{ editora.nome }}</option>
-        </select>
-
-        <label>Categoria:</label>
-        <select class="form-select" v-model="livro.categoria">
-          <option v-for="categoria in categorias" :value="categoria.id">{{ categoria.descricao }}</option>
-        </select>
-
-        <button class="btn btn-outline-secondary" @click="salvar">Salvar</button>
-      </div>
-      <hr />
+  <div class="painelDetalhes" v-if="itemSelecionado">
+    <span class="btnFechar" @click="itemSelecionado = null">X</span>
+    <div>ID: {{ itemSelecionado.id }}</div>
+    <div>Título: {{ itemSelecionado.titulo }}</div>
+    <div>ISBN: {{ itemSelecionado.isbn }}</div>
+    <div>Quantidade: {{ itemSelecionado.quantidade }}</div>
+    <div>Preço: {{ itemSelecionado.preco }}</div>
+    <div>Categoria: {{ itemSelecionado.categoria.descricao }}</div>
+    <div>Autor: {{ itemSelecionado.autor.nome }}</div>
+    <div>Editora: {{ itemSelecionado.editora.nome }}</div>
+  </div>
+  <div id="divBody">
+    <h1>Livro</h1>
+    <hr />
+    <div class="form">
+      <input
+        class="inputAdd"
+        type="text"
+        v-model="livro.titulo"
+        placeholder="Nome"
+      />
+      <input
+        class="inputAdd"
+        type="text"
+        v-model="livro.isbn"
+        placeholder="ISBN"
+      />
+      <input
+        class="inputAdd"
+        type="text"
+        v-model="livro.quantidade"
+        placeholder="Quantidade"
+      />
+      <input
+        class="inputAdd"
+        type="text"
+        v-model="livro.preco"
+        placeholder="Preço"
+      />
+      <select class="selectDropdown" v-model="livro.autor" id="">
+        <option v-for="autor in autores" :key="autor.id" :value="autor.id">
+          {{ autor.nome }}
+        </option>
+      </select>
+      <select class="selectDropdown" v-model="livro.editora" id="">
+        <option
+          v-for="editora in editoras"
+          :key="editora.id"
+          :value="editora.id"
+        >
+          {{ editora.nome }}
+        </option>
+      </select>
+      <select class="selectDropdown" v-model="livro.categoria" id="">
+        <option
+          v-for="categoria in categorias"
+          :key="categoria.id"
+          :value="categoria.id"
+        >
+          {{ categoria.descricao }}
+        </option>
+      </select>
+      <button class="salvarBtn" @click="salvar">Salvar</button>
     </div>
+    <hr />
     <ul>
-      <li v-for="livro in livros" :key="livro.id">
-        <span class="spanLivro" @click="editar(livro)">
-          ({{ livro.id }}) - {{ livro.titulo }} - {{ livro.isbn }} - {{ livro.quantidade }} - {{ livro.preco }}
+      <li class="listaCategoria" v-for="livro in livros" :key="livro.id">
+        <span class="itemCategoria" @click="selecionarItem(livro)">
+          <!--<div class="divID">{{ livro.id }}</div> -->
+          <div class="divNome">{{ livro.titulo }}</div>
+          <!--<div class="divSite"><u>Site:</u> {{ livro.site }}</div>-->
         </span>
-        <button type="button" class="btn btn-danger" @click="excluir(livro)">X</button>
+        <span class="editarBtn" @click="editar(livro)">Editar</span>
+        <span class="deleteBtn" @click="excluir(livro)">X</span>
       </li>
     </ul>
   </div>
 </template>
 
-<style scoped>
-
-.spanLivro {
-  cursor: pointer;
-  font-size: large;
-  margin-right: 10px;
-}
-
-.input-group {
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-}
-</style>
+<style></style>
