@@ -10,11 +10,14 @@ const categoriasApi = new CategoriasApi();
 export default {
   data() {
     return {
-      livros: [],
-      livro: {},
       autor: {},
-      editora: {},
       categoria: {},
+      editora: {},
+      livro: {},
+      autores: [],
+      categorias: [],
+      editoras: [],
+      livros: [],
       itemSelecionado: null,
     };
   },
@@ -23,17 +26,6 @@ export default {
     this.autores = await autoresApi.buscarTodosOsAutores();
     this.editoras = await editorasApi.buscarTodasAsEditoras();
     this.categorias = await categoriasApi.buscarTodasAsCategorias();
-  },
-  watch: {
-    itemSelecionado(novoValor) {
-      if (novoValor != null) {
-        document.getElementById("divBody").classList.add("blur");
-        document.getElementById("divNav").classList.add("blur");
-      } else {
-        document.getElementById("divBody").classList.remove("blur");
-        document.getElementById("divNav").classList.remove("blur");
-      }
-    },
   },
   methods: {
     async selecionarItem(livro) {
@@ -61,51 +53,43 @@ export default {
 </script>
 
 <template>
-  <div class="painelDetalhes" v-if="itemSelecionado">
-    <span class="btnFechar" @click="itemSelecionado = null">X</span>
-    <div>ID: {{ itemSelecionado.id }}</div>
-    <div>Título: {{ itemSelecionado.titulo }}</div>
-    <div>ISBN: {{ itemSelecionado.isbn }}</div>
-    <div>Quantidade: {{ itemSelecionado.quantidade }}</div>
-    <div>Preço: {{ itemSelecionado.preco }}</div>
-    <div>Categoria: {{ itemSelecionado.categoria.descricao }}</div>
-    <div>Autor: {{ itemSelecionado.autor.nome }}</div>
-    <div>Editora: {{ itemSelecionado.editora.nome }}</div>
-  </div>
-  <div id="divBody">
-    <h1>Livro</h1>
-    <hr />
-    <div class="form">
+  <div class="tudo">
+    <div class="title">
+      <h2>Gerenciamento de Livros</h2>
+    </div>
+    <div class="form input-group">
       <input
-        class="inputAdd"
+        class="form-control"
         type="text"
         v-model="livro.titulo"
         placeholder="Nome"
       />
       <input
-        class="inputAdd"
+        class="form-control"
         type="text"
         v-model="livro.isbn"
         placeholder="ISBN"
       />
       <input
-        class="inputAdd"
+        class="form-control"
         type="text"
         v-model="livro.quantidade"
         placeholder="Quantidade"
       />
       <input
-        class="inputAdd"
+        class="form-control"
         type="text"
         v-model="livro.preco"
         placeholder="Preço"
       />
-      <select class="selectDropdown" v-model="livro.autor" id="">
+      </div>
+      <div class="form input-group">
+      <select class="" v-model="livro.autor" id="">
         <option v-for="autor in autores" :key="autor.id" :value="autor.id">
           {{ autor.nome }}
         </option>
       </select>
-      <select class="selectDropdown" v-model="livro.editora" id="">
+      <select class="" v-model="livro.editora" id="">
         <option
           v-for="editora in editoras"
           :key="editora.id"
@@ -114,7 +98,7 @@ export default {
           {{ editora.nome }}
         </option>
       </select>
-      <select class="selectDropdown" v-model="livro.categoria" id="">
+      <select class="" v-model="livro.categoria" id="">
         <option
           v-for="categoria in categorias"
           :key="categoria.id"
@@ -123,21 +107,43 @@ export default {
           {{ categoria.descricao }}
         </option>
       </select>
-      <button class="salvarBtn" @click="salvar">Salvar</button>
+      <button class="btn btn-outline-secondary" @click="salvar">Salvar</button>
     </div>
     <hr />
-    <ul>
-      <li class="listaCategoria" v-for="livro in livros" :key="livro.id">
-        <span class="itemCategoria" @click="selecionarItem(livro)">
-          <!--<div class="divID">{{ livro.id }}</div> -->
-          <div class="divNome">{{ livro.titulo }}</div>
-          <!--<div class="divSite"><u>Site:</u> {{ livro.site }}</div>-->
-        </span>
-        <span class="editarBtn" @click="editar(livro)">Editar</span>
-        <span class="deleteBtn" @click="excluir(livro)">X</span>
-      </li>
-    </ul>
+    <table>
+      <thead>
+        <tr >
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="listaCategoria" v-for="livro in livros" :key="livro.id">
+          <td scope="row" @click="selecionarItem(livro)">
+            <div>{{ livro.id }}</div>
+          </td>
+          <td>
+            <div>{{ livro.titulo }}</div>
+          </td>
+          <td>
+            <button class="btn btn-outline-secondary" @click="editar(editora)">Editar</button>
+            <button class="btn btn-outline-secondary" @click="excluir(editora)">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
-<style></style>
+<style>
+.form-control {
+  margin: 2px;
+}
+.titulo {
+  padding-top: 80px;
+}
+.tudo {
+  padding-top: 80px;
+}
+</style>

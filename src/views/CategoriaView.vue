@@ -33,21 +33,20 @@
   };
 </script>
 <template>
-  <div class="container">
+  <div class="tudo">
     <div class="title">
-      {{ categoria }}
       <h2>Gerenciamento de categorias</h2>
     </div>
-    <div class="form-input">
+    <div class="form input-group">
       <input
         @keyup.enter="salvar"
         v-model="categoria.descricao"
         type="text"
         placeholder="Descrição da categoria"
-        class="input-maior"
+        class="form-control"
       />
 
-      <button @click="salvar">Salvar</button>
+      <button class="btn btn-outline-secondary" @click="salvar">Salvar</button>
     </div>
     <div class="list-categorias">
       <table>
@@ -67,8 +66,8 @@
               {{ categoria.descricao }}
             </td>
             <td>
-              <button @click="editar(categoria)">Editar</button>
-              <button @click="excluir(categoria)">Excluir</button>
+              <button class="btn btn-outline-secondary" @click="editar(categoria)">Editar</button>
+              <button class="btn btn-outline-secondary" @click="excluir(categoria)">Excluir</button>
             </td>
           </tr>
         </tbody>

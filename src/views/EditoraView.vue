@@ -34,27 +34,26 @@
 </script>
 
 <template>
-  <div class="container">
+  <div class="tudo">
     <div class="title">
-      {{ editora }}
       <h2>Gerenciamento de Editoras</h2>
     </div>
-    <div class="form-input">
+    <div class="form input-group">
       <input
         @keyup.enter="salvar"
         v-model="editora.nome"
         type="text"
         placeholder="Nome do editora"
-        class="input-maior"
+        class="form-control"
       />
       <input
         @keyup.enter="salvar"
         v-model="editora.site"
         type="text"
         placeholder="Nome do site"
-        class="input-maior"
+        class="form-control"
       />
-      <button @click="salvar">Adicionar</button>
+      <button class="btn btn-outline-secondary" @click="salvar">Adicionar</button>
     </div>
     <div class="list-editoras">
       <table>
@@ -78,8 +77,8 @@
               <a target="blank" :href="editora.site"> {{ editora.site }}</a>
             </td>
             <td>
-              <button @click="editar(editora)">Editar</button>
-              <button @click="excluir(editora)">Excluir</button>
+              <button class="btn btn-outline-secondary" @click="editar(editora)">Editar</button>
+              <button class="btn btn-outline-secondary" @click="excluir(editora)">Excluir</button>
             </td>
           </tr>
         </tbody>

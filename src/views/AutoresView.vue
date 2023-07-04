@@ -33,28 +33,27 @@
   };
 </script>
 <template>
-  <div class="container">
+  <div class="tudo">
     <div class="title">
-      {{ autor }}
       <h2>Gerenciamento de autores</h2>
     </div>
-    <div class="form-input">
+    <div class="form input-group">
       <input
         @keyup.enter="salvar"
         v-model="autor.nome"
         type="text"
         placeholder="Nome do autor"
-        class="input-maior"
+        class="form-control"
       />
       <input
         @keyup.enter="salvar"
         v-model="autor.email"
         type="text"
         placeholder="Email"
-        class="input-maior"
+        class="form-control"
       />
 
-      <button @click="salvar">Salvar</button>
+      <button class="btn btn-outline-secondary" @click="salvar">Salvar</button>
     </div>
     <div class="list-autores">
       <table>
@@ -78,8 +77,8 @@
               {{ autor.email }}
             </td>
             <td>
-              <button @click="editar(autor)">Editar</button>
-              <button @click="excluir(autor)">Excluir</button>
+              <button class="btn btn-outline-secondary" @click="editar(autor)">Editar</button>
+              <button class="btn btn-outline-secondary" @click="excluir(autor)">Excluir</button>
             </td>
           </tr>
         </tbody>
