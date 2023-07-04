@@ -13,8 +13,11 @@ export default {
       livros: [],
       livro: {},
       autor: {},
+      autores: [],
       editora: {},
+      editoras: [],
       categoria: {},
+      categorias: [],
       itemSelecionado: null,
     };
   },
