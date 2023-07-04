@@ -10,11 +10,14 @@ const categoriasApi = new CategoriasApi();
 export default {
   data() {
     return {
-      autores: [],
-      editora: {},
-      editoras: [],
+      autor: {},
       categoria: {},
+      editora: {},
+      livro: {},
+      autores: [],
       categorias: [],
+      editoras: [],
+      livros: [],
       itemSelecionado: null,
     };
   },
